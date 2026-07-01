@@ -8,6 +8,7 @@ import { getPublicUrl } from '@/lib/files';
 import Header from '@/components/layout/Header';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import WelcomeScreen from '@/components/ui/WelcomeScreen';
+import GuestbookPage from '@/components/guestbook/GuestbookPage';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import CategoryTabs from '@/components/filters/CategoryTabs';
 import SortDropdown from '@/components/filters/SortDropdown';
@@ -24,7 +25,7 @@ import Toast from '@/components/ui/Toast';
 import { useToast } from '@/hooks/useToast';
 
 export default function HomePage() {
-  const [isWelcome, setIsWelcome]       = useState(true);
+  const [currentPage, setCurrentPage]   = useState<'welcome' | 'files' | 'guestbook'>('welcome');
   const [isAdmin, setIsAdmin]           = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
   const pendingActionRef                = useRef<(() => void) | null>(null);
@@ -140,7 +141,7 @@ export default function HomePage() {
   };
 
   const handleReset = useCallback(() => {
-    setIsWelcome(true);
+    setCurrentPage('welcome');
     setCurrentFolderId(null);
     setSelected(new Set());
     setSearch('');
@@ -219,8 +220,17 @@ export default function HomePage() {
   const isEmpty = !loading && !error && files.length === 0 && folders.length === 0;
   const isSearchActive = debouncedSearch.trim() !== '' || category !== 'all';
 
-  if (isWelcome) {
-    return <WelcomeScreen onEnter={() => setIsWelcome(false)} />;
+  if (currentPage === 'welcome') {
+    return (
+      <WelcomeScreen
+        onEnterFiles={() => setCurrentPage('files')}
+        onEnterGuestbook={() => setCurrentPage('guestbook')}
+      />
+    );
+  }
+
+  if (currentPage === 'guestbook') {
+    return <GuestbookPage onBack={() => setCurrentPage('welcome')} />;
   }
 
   return (

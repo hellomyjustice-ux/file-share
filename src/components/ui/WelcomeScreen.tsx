@@ -1,17 +1,19 @@
 'use client';
-import { Moon, FolderOpen, Upload, Share2 } from 'lucide-react';
+import { Moon, FolderOpen, Upload, Share2, BookOpen } from 'lucide-react';
 
 /**
  * WelcomeScreen 컴포넌트
  *
  * Props:
- * @param {function} onEnter - 파일 보관함 입장 버튼 클릭 핸들러 [Required]
+ * @param {function} onEnterFiles - 파일 보관함 입장 버튼 클릭 핸들러 [Required]
+ * @param {function} onEnterGuestbook - 방명록 버튼 클릭 핸들러 [Required]
  */
 interface Props {
-  onEnter: () => void;
+  onEnterFiles: () => void;
+  onEnterGuestbook: () => void;
 }
 
-export default function WelcomeScreen({ onEnter }: Props) {
+export default function WelcomeScreen({ onEnterFiles, onEnterGuestbook }: Props) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex flex-col items-center justify-center px-4 relative overflow-hidden">
       {/* 배경 장식 원 */}
@@ -58,16 +60,28 @@ export default function WelcomeScreen({ onEnter }: Props) {
         </div>
       </div>
 
-      {/* 입장 버튼 */}
-      <button
-        onClick={onEnter}
-        className="group relative px-8 sm:px-12 py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base sm:text-lg rounded-2xl transition-all duration-200 shadow-lg shadow-blue-900/50 hover:shadow-blue-700/50 hover:scale-105 active:scale-95"
-      >
-        <span className="flex items-center gap-2">
-          파일 보관함 열기
-          <span className="text-blue-200 group-hover:translate-x-1 transition-transform duration-200 inline-block">→</span>
-        </span>
-      </button>
+      {/* 버튼 그룹 */}
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        {/* 파일 보관함 */}
+        <button
+          onClick={onEnterFiles}
+          className="group relative px-8 sm:px-12 py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base sm:text-lg rounded-2xl transition-all duration-200 shadow-lg shadow-blue-900/50 hover:shadow-blue-700/50 hover:scale-105 active:scale-95"
+        >
+          <span className="flex items-center gap-2">
+            파일 보관함 열기
+            <span className="text-blue-200 group-hover:translate-x-1 transition-transform duration-200 inline-block">→</span>
+          </span>
+        </button>
+
+        {/* 방명록 */}
+        <button
+          onClick={onEnterGuestbook}
+          className="group flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white font-medium text-base sm:text-lg rounded-2xl transition-all duration-200 backdrop-blur-sm hover:scale-105 active:scale-95"
+        >
+          <BookOpen className="w-5 h-5 text-blue-300 group-hover:scale-110 transition-transform duration-200" />
+          방명록
+        </button>
+      </div>
     </div>
   );
 }
